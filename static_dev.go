@@ -1,16 +1,14 @@
-//+build dev
 //go:build dev
-// +build dev
 
 package main
 
 import (
-	"fmt"
+	"log/slog"
 	"net/http"
 	"os"
 )
 
 func public() http.Handler {
-	fmt.Println("building static files for development")
+	slog.Info("serving static files from disk")
 	return http.StripPrefix("/public/", http.FileServerFS(os.DirFS("public")))
 }

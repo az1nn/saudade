@@ -23,5 +23,7 @@ func main() {
 
 	listenAddr := os.Getenv("LISTEN_ADDR")
 	slog.Info("HTTP server started", "listenAddr", listenAddr)
-	http.ListenAndServe(listenAddr, router)
+	if err := http.ListenAndServe(listenAddr, router); err != nil {
+		log.Fatal(err)
+	}
 }
