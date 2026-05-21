@@ -1,31 +1,14 @@
-# syntax=docker/dockerfile:1
+ARG GO_VERSION=1
+FROM golang:${GO_VERSION}-bookworm as builder
 
-# ---------- build stage ----------
-FROM golang:1.22-alpine AS builder
-
-WORKDIR /app
-
-# Install templ code generator
-RUN go install github.com/a-h/templ/cmd/templ@v0.2.663
-
+WORKDIR /usr/src/app
 COPY go.mod go.sum ./
-RUN go mod download
-
+RUN go mod download && go mod verify
 COPY . .
+RUN go build -v -o /run-app .
 
-# Regenerate templ files (in case sources are newer than generated files)
-RUN templ generate ./views/...
 
-# Build the production binary (embeds public/ via //go:embed)
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/bin/app .
+FROM debian:bookworm
 
-# ---------- runtime stage ----------
-FROM alpine:3.19
-
-WORKDIR /app
-
-COPY --from=builder /app/bin/app ./app
-
-EXPOSE 8080
-
-CMD ["./app"]
+COPY --from=builder /run-app /usr/local/bin/
+CMD ["run-app"]
