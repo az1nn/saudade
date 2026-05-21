@@ -79,3 +79,157 @@ func TestHandleLoginIndex(t *testing.T) {
 		t.Errorf("expected Content-Type to contain text/html, got %q", ct)
 	}
 }
+
+// TestHomePageHeroContent verifies the home page includes the design-system hero section.
+func TestHomePageHeroContent(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+
+	if err := handlers.HandleHome(rec, req); err != nil {
+		t.Fatalf("HandleHome returned unexpected error: %v", err)
+	}
+
+	body := rec.Body.String()
+	wantTexts := []string{
+		"Cherished Memories",
+		"Add Photo",
+		"Explore Stories",
+		"Saudade",
+	}
+	for _, want := range wantTexts {
+		if !strings.Contains(body, want) {
+			t.Errorf("home page: expected body to contain %q", want)
+		}
+	}
+}
+
+// TestHomePageColorPalette verifies the color palette section names are present.
+func TestHomePageColorPalette(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+
+	if err := handlers.HandleHome(rec, req); err != nil {
+		t.Fatalf("HandleHome returned unexpected error: %v", err)
+	}
+
+	body := rec.Body.String()
+	palette := []string{"Parchment", "Aged Ink", "Faded Terracotta", "Faded Sage"}
+	for _, color := range palette {
+		if !strings.Contains(body, color) {
+			t.Errorf("home page: expected color palette to contain %q", color)
+		}
+	}
+}
+
+// TestHomePageUIElements verifies the UI elements section is present.
+func TestHomePageUIElements(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+
+	if err := handlers.HandleHome(rec, req); err != nil {
+		t.Fatalf("HandleHome returned unexpected error: %v", err)
+	}
+
+	body := rec.Body.String()
+	if !strings.Contains(body, "UI Elements") {
+		t.Error("home page: expected body to contain \"UI Elements\" section heading")
+	}
+}
+
+// TestHomePageTitle verifies the HTML title tag is set to "Saudade".
+func TestHomePageTitle(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+
+	if err := handlers.HandleHome(rec, req); err != nil {
+		t.Fatalf("HandleHome returned unexpected error: %v", err)
+	}
+
+	body := rec.Body.String()
+	if !strings.Contains(body, "<title>Saudade</title>") {
+		t.Errorf("home page: expected <title>Saudade</title>, body snippet: %q", body[:min(200, len(body))])
+	}
+}
+
+// TestLoginPageContent verifies the login page renders the branded form.
+func TestLoginPageContent(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/login", nil)
+	rec := httptest.NewRecorder()
+
+	if err := handlers.HandleLoginIndex(rec, req); err != nil {
+		t.Fatalf("HandleLoginIndex returned unexpected error: %v", err)
+	}
+
+	body := rec.Body.String()
+	wantTexts := []string{
+		"Welcome Back",
+		"Sign In",
+		`type="email"`,
+		`type="password"`,
+		`type="submit"`,
+		"Saudade",
+	}
+	for _, want := range wantTexts {
+		if !strings.Contains(body, want) {
+			t.Errorf("login page: expected body to contain %q", want)
+		}
+	}
+}
+
+// TestLoginPageHasForm verifies the login page includes a POST form to /login.
+func TestLoginPageHasForm(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/login", nil)
+	rec := httptest.NewRecorder()
+
+	if err := handlers.HandleLoginIndex(rec, req); err != nil {
+		t.Fatalf("HandleLoginIndex returned unexpected error: %v", err)
+	}
+
+	body := rec.Body.String()
+	if !strings.Contains(body, `method="POST"`) {
+		t.Error("login page: expected form with method=\"POST\"")
+	}
+	if !strings.Contains(body, `action="/login"`) {
+		t.Error("login page: expected form with action=\"/login\"")
+	}
+}
+
+// TestNavigationContainsBrand verifies the navigation bar renders the Saudade brand name.
+func TestNavigationContainsBrand(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+
+	if err := handlers.HandleHome(rec, req); err != nil {
+		t.Fatalf("HandleHome returned unexpected error: %v", err)
+	}
+
+	body := rec.Body.String()
+	if !strings.Contains(body, "Saudade") {
+		t.Error("navigation: expected brand name \"Saudade\" in page output")
+	}
+	if !strings.Contains(body, `href="/login"`) {
+		t.Error("navigation: expected login link with href=\"/login\"")
+	}
+}
+
+// TestNavigationHasHamburgerMenu verifies the navigation includes a hamburger-menu button.
+func TestNavigationHasHamburgerMenu(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+
+	if err := handlers.HandleHome(rec, req); err != nil {
+		t.Fatalf("HandleHome returned unexpected error: %v", err)
+	}
+
+	if !strings.Contains(rec.Body.String(), "Open menu") {
+		t.Error("navigation: expected hamburger menu button with aria-label \"Open menu\"")
+	}
+}
+
+// min is a helper to avoid index out of range in test error messages.
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}

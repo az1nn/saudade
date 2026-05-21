@@ -1,11 +1,69 @@
 package home
 
 import (
+	"gothstarter/views/components"
 	"gothstarter/views/layouts"
 )
 
 templ Index() {
 	@layouts.Base() {
-		<div class="flex flex-col items-center"></div>
+		<main>
+			<!-- Hero Section -->
+			<section class="container mx-auto px-4 py-20 text-center">
+				<h1 class="font-display text-5xl md:text-7xl font-bold text-aged-ink mb-6">
+					Cherished Memories
+				</h1>
+				<p class="text-lg text-aged-ink/70 max-w-xl mx-auto mb-10">
+					A private, secure space for your family's roots — stories, records,
+					and connections passed down through generations.
+				</p>
+				<div class="flex flex-col sm:flex-row gap-4 justify-center">
+					@components.PrimaryButton("Add Photo")
+					@components.SecondaryButton("Explore Stories")
+				</div>
+			</section>
+			<!-- Color Palette Section -->
+			<section class="container mx-auto px-4 py-12">
+				<h2 class="font-display text-2xl text-aged-ink mb-8 text-center">Color Palette</h2>
+				<div class="flex flex-wrap justify-center gap-10">
+					<div class="flex flex-col items-center gap-2">
+						<div class="w-16 h-16 rounded-full bg-parchment border border-aged-ink/20 shadow-sm"></div>
+						<span class="text-sm font-medium text-aged-ink">Parchment</span>
+						<span class="text-xs text-aged-ink/50">#F4F1EA</span>
+					</div>
+					<div class="flex flex-col items-center gap-2">
+						<div class="w-16 h-16 rounded-full bg-aged-ink shadow-sm"></div>
+						<span class="text-sm font-medium text-aged-ink">Aged Ink</span>
+						<span class="text-xs text-aged-ink/50">#3E362E</span>
+					</div>
+					<div class="flex flex-col items-center gap-2">
+						<div class="w-16 h-16 rounded-full bg-terracotta shadow-sm"></div>
+						<span class="text-sm font-medium text-aged-ink">Faded Terracotta</span>
+						<span class="text-xs text-aged-ink/50">#C28B7E</span>
+					</div>
+					<div class="flex flex-col items-center gap-2">
+						<div class="w-16 h-16 rounded-full bg-sage shadow-sm"></div>
+						<span class="text-sm font-medium text-aged-ink">Faded Sage</span>
+						<span class="text-xs text-aged-ink/50">#8A9A86</span>
+					</div>
+				</div>
+			</section>
+			<!-- UI Elements Section -->
+			<section class="container mx-auto px-4 py-12 mb-12">
+				<h2 class="font-display text-2xl text-aged-ink mb-8 text-center">UI Elements</h2>
+				<div class="flex flex-wrap justify-center gap-6 items-center">
+					@components.PrimaryButton("Add Photo")
+					@components.SecondaryButton("View More")
+					<button aria-label="Calendar" class="p-3 rounded-lg border border-aged-ink/20 hover:bg-aged-ink/5 transition-colors text-aged-ink">
+						<i class="fa-regular fa-calendar text-xl"></i>
+					</button>
+					<button aria-label="Menu" class="flex flex-col gap-1.5 p-3 rounded-lg border border-aged-ink/20 hover:bg-aged-ink/5 transition-colors">
+						<span class="block w-5 h-0.5 bg-aged-ink rounded"></span>
+						<span class="block w-5 h-0.5 bg-aged-ink rounded"></span>
+						<span class="block w-5 h-0.5 bg-aged-ink rounded"></span>
+					</button>
+				</div>
+			</section>
+		</main>
 	}
 }

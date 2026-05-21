@@ -10,6 +10,10 @@ import "context"
 import "io"
 import "bytes"
 
+import (
+	"gothstarter/views/layouts"
+)
+
 func Login() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -23,7 +27,22 @@ func Login() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div>on the login page</div>")
+		templ_7745c5c3_Var2 := templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
+			if !templ_7745c5c3_IsBuffer {
+				templ_7745c5c3_Buffer = templ.GetBuffer()
+				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"min-h-screen flex items-center justify-center px-4 py-16\"><div class=\"w-full max-w-md\"><div class=\"text-center mb-8\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 48 48\" class=\"w-12 h-12 text-aged-ink mx-auto\" fill=\"currentColor\" aria-hidden=\"true\"><rect x=\"2\" y=\"2\" width=\"44\" height=\"44\" rx=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-dasharray=\"5 3\"></rect> <rect x=\"22\" y=\"33\" width=\"4\" height=\"9\" rx=\"1\"></rect> <ellipse cx=\"24\" cy=\"24\" rx=\"9\" ry=\"8\"></ellipse> <ellipse cx=\"16\" cy=\"28\" rx=\"7\" ry=\"6\"></ellipse> <ellipse cx=\"32\" cy=\"28\" rx=\"7\" ry=\"6\"></ellipse></svg><h1 class=\"font-display text-3xl font-bold text-aged-ink mt-3\">Welcome Back</h1><p class=\"text-aged-ink/60 mt-2 text-sm\">Sign in to your Saudade account</p></div><form method=\"POST\" action=\"/login\" class=\"bg-white/40 rounded-xl border border-aged-ink/10 shadow-sm p-8 space-y-5\"><div><label for=\"email\" class=\"block text-sm font-medium text-aged-ink mb-1.5\">Email</label> <input id=\"email\" name=\"email\" type=\"email\" required placeholder=\"you@example.com\" class=\"w-full px-4 py-2.5 rounded-md border border-aged-ink/20 bg-parchment/60 text-aged-ink placeholder:text-aged-ink/40 focus:outline-none focus:ring-2 focus:ring-terracotta/40\"></div><div><label for=\"password\" class=\"block text-sm font-medium text-aged-ink mb-1.5\">Password</label> <input id=\"password\" name=\"password\" type=\"password\" required placeholder=\"••••••••\" class=\"w-full px-4 py-2.5 rounded-md border border-aged-ink/20 bg-parchment/60 text-aged-ink placeholder:text-aged-ink/40 focus:outline-none focus:ring-2 focus:ring-terracotta/40\"></div><button type=\"submit\" class=\"w-full py-2.5 px-6 rounded-md bg-terracotta text-white font-medium hover:bg-terracotta/80 transition-colors\">Sign In</button></form></div></main>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if !templ_7745c5c3_IsBuffer {
+				_, templ_7745c5c3_Err = io.Copy(templ_7745c5c3_W, templ_7745c5c3_Buffer)
+			}
+			return templ_7745c5c3_Err
+		})
+		templ_7745c5c3_Err = layouts.Base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
