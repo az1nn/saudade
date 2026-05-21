@@ -19,5 +19,6 @@ func Make(h HTTPHandler) http.HandlerFunc {
 }
 
 func Render(w http.ResponseWriter, r *http.Request, c templ.Component) error {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	return c.Render(r.Context(), w)
 }
