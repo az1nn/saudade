@@ -1,0 +1,45 @@
+name: "Copilot Setup Steps"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  # Must be named `copilot-setup-steps` to be picked up by Copilot.
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Install templ
+        run: go install github.com/a-h/templ/cmd/templ@v0.2.663
+
+      - name: Download Go dependencies
+        run: go mod download
+
+      - name: Install flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@v1.5
+
+      - name: Create Fly.io app if it does not exist
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          APP_NAME=$(grep '^app' fly.toml | sed 's/app *= *"\(.*\)"/\1/')
+          flyctl apps list --json | grep -q "\"${APP_NAME}\"" \
+            || flyctl apps create "${APP_NAME}" --org personal

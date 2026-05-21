@@ -1,0 +1,15 @@
+package components
+
+// PrimaryButton renders a filled terracotta action button.
+templ PrimaryButton(text string) {
+	<button class="inline-flex items-center justify-center px-6 py-2.5 rounded-md bg-terracotta text-white text-sm font-medium hover:bg-terracotta/80 transition-colors">
+		{ text }
+	</button>
+}
+
+// SecondaryButton renders an outlined terracotta button.
+templ SecondaryButton(text string) {
+	<button class="inline-flex items-center justify-center px-6 py-2.5 rounded-md border-2 border-terracotta text-terracotta text-sm font-medium hover:bg-terracotta/10 transition-colors">
+		{ text }
+	</button>
+}
